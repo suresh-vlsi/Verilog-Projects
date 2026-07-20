@@ -1,123 +1,137 @@
-module uart_tx(
+`timescale 1ns/1ps
 
-    input CLK,
-    input RST,
+module uart_tx
+#(
+    parameter CLK_FREQ  = 50000000,
+    parameter BAUD_RATE = 9600
+)
+(
+    input clk,
+    input rst,
 
-    input TX_START,
-    input [7:0] DATA_IN,
+    input tx_start,
+    input [7:0] tx_data,
 
-    output reg TX,
-    output reg BUSY
-
+    output reg tx,
+    output reg tx_busy
 );
 
-parameter IDLE      = 2'b00;
-parameter START_BIT = 2'b01;
-parameter DATA_BITS = 2'b10;
-parameter STOP_BIT  = 2'b11;
+localparam CLKS_PER_BIT = CLK_FREQ / BAUD_RATE;
 
-reg [1:0] state,next_state;
+//----------------------------------------------------
+// State Encoding
+//----------------------------------------------------
+localparam IDLE  = 2'd0;
+localparam START = 2'd1;
+localparam DATA  = 2'd2;
+localparam STOP  = 2'd3;
 
-reg [7:0] shift_reg;
-reg [2:0] bit_count;
-//state register
-always @(posedge CLK or posedge RST)
+reg [1:0] state;
+
+reg [12:0] clk_count;
+reg [2:0] bit_index;
+reg [7:0] data_reg;
+
+//----------------------------------------------------
+// UART FSM
+//----------------------------------------------------
+always @(posedge clk or posedge rst)
 begin
-    if(RST)
-        state <= IDLE;
+    if(rst)
+    begin
+        state      <= IDLE;
+        tx         <= 1'b1;
+        tx_busy    <= 1'b0;
+        clk_count  <= 0;
+        bit_index  <= 0;
+        data_reg   <= 0;
+    end
+
     else
-        state <= next_state;
-end
-//next state logic
-always @(*)
-begin
+    begin
 
-case(state)
+        case(state)
 
-IDLE:
-    if(TX_START)
-        next_state = START_BIT;
-    else
-        next_state = IDLE;
+        //------------------------------------------
+        // IDLE
+        //------------------------------------------
+        IDLE:
+        begin
+            tx <= 1'b1;
+            clk_count <= 0;
+            bit_index <= 0;
+            tx_busy <= 0;
 
-START_BIT:
-    next_state = DATA_BITS;
+            if(tx_start)
+            begin
+                data_reg <= tx_data;
+                tx_busy <= 1;
+                state <= START;
+            end
+        end
 
-DATA_BITS:
-    if(bit_count == 3'd7)
-        next_state = STOP_BIT;
-    else
-        next_state = DATA_BITS;
+        //------------------------------------------
+        // START BIT
+        //------------------------------------------
+        START:
+        begin
+            tx <= 1'b0;
 
-STOP_BIT:
-    next_state = IDLE;
+            if(clk_count < CLKS_PER_BIT-1)
+                clk_count <= clk_count + 1;
+            else
+            begin
+                clk_count <= 0;
+                state <= DATA;
+            end
+        end
 
-default:
-    next_state = IDLE;
+        //------------------------------------------
+        // DATA BITS
+        //------------------------------------------
+        DATA:
+        begin
+            tx <= data_reg[bit_index];
 
-endcase
+            if(clk_count < CLKS_PER_BIT-1)
+                clk_count <= clk_count + 1;
+            else
+            begin
+                clk_count <= 0;
 
-end
-//output and datapath logic
-always @(posedge CLK or posedge RST)
-begin
+                if(bit_index < 7)
+                    bit_index <= bit_index + 1;
+                else
+                begin
+                    bit_index <= 0;
+                    state <= STOP;
+                end
+            end
+        end
 
-if(RST)
-begin
+        //------------------------------------------
+        // STOP BIT
+        //------------------------------------------
+        STOP:
+        begin
+            tx <= 1'b1;
 
-TX <= 1'b1;
-BUSY <= 1'b0;
-shift_reg <= 8'd0;
-bit_count <= 3'd0;
+            if(clk_count < CLKS_PER_BIT-1)
+                clk_count <= clk_count + 1;
+            else
+            begin
+                clk_count <= 0;
+                tx_busy <= 0;
+                state <= IDLE;
+            end
+        end
 
-end
+        default:
+            state <= IDLE;
 
-else begin
+        endcase
 
-case(state)
-
-IDLE:
-begin
-TX <= 1'b1;
-BUSY <= 1'b0;
-
-if(TX_START)
-begin
-shift_reg <= DATA_IN;
-bit_count <= 3'd0;
-end
-
-end
-
-START_BIT:
-begin
-TX <= 1'b0;
-BUSY <= 1'b1;
-end
-
-DATA_BITS:
-begin
-
-TX <= shift_reg[0];
-
-shift_reg <= shift_reg >> 1;
-
-bit_count <= bit_count + 1;
-
-end
-
-STOP_BIT:
-begin
-
-TX <= 1'b1;
-
-BUSY <= 1'b0;
-
+    end
 end
 
-endcase
-
-end
-
-end
 endmodule
