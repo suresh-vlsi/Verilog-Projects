@@ -2,22 +2,23 @@
 
 ## Description
 
-A JK Flip-Flop is an edge-triggered sequential circuit that removes the invalid state of the SR Flip-Flop. When both J and K are HIGH, the output toggles on every rising edge of the clock.
+A JK Flip-Flop is an edge-triggered sequential circuit with an **asynchronous active-high reset**. It supports Hold, Set, Reset, and Toggle operations.
 
 ## Truth Table
 
-| Clock | J | K | Q(next) | Operation |
-|-------|---|---|----------|-----------|
-| ↑ | 0 | 0 | Hold | No Change |
-| ↑ | 0 | 1 | 0 | Reset |
-| ↑ | 1 | 0 | 1 | Set |
-| ↑ | 1 | 1 | Toggle | Complement Q |
+| RST | Clock | J | K | Q(next) | Operation |
+|-----|-------|---|---|----------|-----------|
+| 1 | X | X | X | 0 | Reset |
+| 0 | ↑ | 0 | 0 | Hold | No Change |
+| 0 | ↑ | 0 | 1 | 0 | Reset |
+| 0 | ↑ | 1 | 0 | 1 | Set |
+| 0 | ↑ | 1 | 1 | Toggle | Complement Q |
 
 ## Features
 
 - Positive edge-triggered
-- No invalid input condition
-- Supports Hold, Set, Reset, and Toggle operations
+- Asynchronous active-high reset
+- Hold, Set, Reset, and Toggle operations
 - Uses non-blocking (`<=`) assignments
 
 ## Files

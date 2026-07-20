@@ -5,6 +5,7 @@ module jk_ff_tb;
 reg J;
 reg K;
 reg CLK;
+reg RST;
 
 wire Q;
 wire Q_bar;
@@ -13,39 +14,37 @@ jk_ff uut(
     .J(J),
     .K(K),
     .CLK(CLK),
+    .RST(RST),
     .Q(Q),
     .Q_bar(Q_bar)
 );
 
-// Clock generation (10 ns period)
+// Clock generation
 initial begin
     CLK = 0;
     forever #5 CLK = ~CLK;
 end
 
-// Stimulus
 initial begin
 
     $dumpfile("jk_ff.vcd");
     $dumpvars(0, jk_ff_tb);
 
-    $display("Time\tCLK J K | Q Q_bar");
-    $monitor("%0t\t%b   %b %b | %b   %b", $time, CLK, J, K, Q, Q_bar);
+    $display("Time\tRST CLK J K | Q");
+    $monitor("%0t\t%b   %b   %b %b | %b",
+             $time,RST,CLK,J,K,Q);
 
-    // Hold
-    J = 0; K = 0; #12;
+    RST=1;
+    J=0;
+    K=0;
+    #12;
 
-    // Set
-    J = 1; K = 0; #10;
+    RST=0;
 
-    // Reset
-    J = 0; K = 1; #10;
-
-    // Toggle
-    J = 1; K = 1; #20;
-
-    // Hold
-    J = 0; K = 0; #10;
+    J=1; K=0; #10;   // Set
+    J=0; K=1; #10;   // Reset
+    J=1; K=1; #20;   // Toggle
+    J=0; K=0; #10;   // Hold
 
     $finish;
 

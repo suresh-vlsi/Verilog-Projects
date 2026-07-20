@@ -2,18 +2,23 @@ module jk_ff(
     input J,
     input K,
     input CLK,
+    input RST,
     output reg Q,
     output Q_bar
 );
 
-always @(posedge CLK)
+always @(posedge CLK or posedge RST)
 begin
-    case ({J, K})
-        2'b00: Q <= Q;      // Hold
-        2'b01: Q <= 1'b0;   // Reset
-        2'b10: Q <= 1'b1;   // Set
-        2'b11: Q <= ~Q;     // Toggle
-    endcase
+    if (RST)
+        Q <= 1'b0;
+    else begin
+        case ({J,K})
+            2'b00: Q <= Q;
+            2'b01: Q <= 1'b0;
+            2'b10: Q <= 1'b1;
+            2'b11: Q <= ~Q;
+        endcase
+    end
 end
 
 assign Q_bar = ~Q;
