@@ -1,4 +1,2 @@
-# Icarus Verilog generated files
-half_adder_sim
+*_sim
 *.vcd
-*.out
