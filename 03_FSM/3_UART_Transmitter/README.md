@@ -289,19 +289,3 @@ After completing this project, you will understand:
 - FPGA implementation concepts
 
 ---
-
-## Author
-
-**Suresh Kumar**
-
-Aspiring VLSI Design Engineer
-
-GitHub: *Add your GitHub profile link here*
-
-LinkedIn: *Add your LinkedIn profile link here*
-
----
-
-## License
-
-This project is released under the MIT License.
