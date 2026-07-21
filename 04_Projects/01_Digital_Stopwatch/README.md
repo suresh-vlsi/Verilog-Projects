@@ -380,17 +380,6 @@ This is the recommended FPGA/ASIC methodology because it:
 iverilog -o stopwatch_sim rtl/1_clock_divider.v rtl/2_control_fsm.v rtl/3_bcd_counter.v rtl/4_digital_stopwatch.v tb/digital_stopwatch_tb.v
 ```
 
-### Linux/macOS
-
-```bash
-iverilog -o stopwatch_sim \
-rtl/1_clock_divider.v \
-rtl/2_control_fsm.v \
-rtl/3_bcd_counter.v \
-rtl/4_digital_stopwatch.v \
-tb/digital_stopwatch_tb.v
-```
-
 ---
 
 ## Run
@@ -539,49 +528,4 @@ FPGA Programming
 ```
 
 ---
-
-# Learning Outcomes
-
-After completing this project, you will understand:
-
-- Hierarchical RTL Design
-- Modular Verilog Coding
-- Clock Division
-- Clock Enable Technique
-- FSM Design
-- Counter Design
-- Parameterized Modules
-- Top-Level Integration
-- Testbench Development
-- Waveform Analysis
-
 ---
-
-# Common Interview Questions
-
-1. Why is a single clock domain preferred?
-2. What is a clock enable?
-3. Why should derived clocks be avoided?
-4. Explain the Moore FSM used.
-5. How does the overflow pulse work?
-6. Why use parameterized modules?
-7. How would you implement a 24-hour stopwatch?
-8. How would you debounce push buttons?
-9. What is metastability?
-10. How would you verify this design?
-
----
-
-# License
-
-This project is released under the **MIT License**.
-
----
-
-# Author
-
-**Suresh Kumar**
-
-GitHub: *Add your GitHub profile link here*
-
-LinkedIn: *Add your LinkedIn profile link here*
