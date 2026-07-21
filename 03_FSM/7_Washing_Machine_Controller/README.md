@@ -91,24 +91,6 @@ This project implements a **Washing Machine Controller** using Verilog HDL. The 
 | done | 1 | Cycle complete indicator |
 
 ---
-
-## Directory Structure
-
-```text
-7_Washing_Machine_Controller/
-│
-├── rtl/
-│   └── washing_machine_controller.v
-│
-├── tb/
-│   └── washing_machine_controller_tb.v
-│
-├── sim/
-├── waveform/
-├── README.md
-└── .gitignore
-```
-
 ---
 
 ## Simulation
@@ -118,7 +100,7 @@ This project implements a **Washing Machine Controller** using Verilog HDL. The 
 Compile
 
 ```bash
-iverilog -o washing_machine.out rtl/washing_machine_controller.v tb/washing_machine_controller_tb.v
+iverilog -o washing_machine.out washing_machine_controller.v washing_machine_controller_tb.v
 ```
 
 Run
@@ -139,8 +121,8 @@ gtkwave washing_machine_controller.vcd
 
 ```tcl
 vlib work
-vlog rtl/washing_machine_controller.v
-vlog tb/washing_machine_controller_tb.v
+vlog washing_machine_controller.v
+vlog washing_machine_controller_tb.v
 vsim washing_machine_controller_tb
 add wave *
 run -all

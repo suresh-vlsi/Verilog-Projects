@@ -89,25 +89,6 @@ State Diagram
 ```
 
 ---
-
-## Directory Structure
-
-```
-3_UART_Transmitter/
-│
-├── rtl/
-│   └── uart_tx.v
-│
-├── tb/
-│   └── uart_tx_tb.v
-│
-├── sim/
-│
-├── waveform/
-│
-└── README.md
-```
-
 ---
 
 ## Parameters
@@ -157,7 +138,7 @@ CLKS_PER_BIT = 50,000,000 / 9600
 Compile
 
 ```bash
-iverilog -o uart_tx.out rtl/uart_tx.v tb/uart_tx_tb.v
+iverilog -o uart_tx.out uart_tx.v uart_tx_tb.v
 ```
 
 Run
@@ -178,8 +159,8 @@ gtkwave uart_tx.vcd
 
 ```tcl
 vlib work
-vlog rtl/uart_tx.v
-vlog tb/uart_tx_tb.v
+vlog uart_tx.v
+vlog uart_tx_tb.v
 vsim uart_tx_tb
 add wave *
 run -all

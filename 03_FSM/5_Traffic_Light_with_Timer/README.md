@@ -70,27 +70,6 @@ This project implements a **Traffic Light Controller with Timer** using Verilog 
 | RED | Red ON | Green |
 
 ---
-
-## Directory Structure
-
-```text
-5_Traffic_Light_With_Timer/
-│
-├── rtl/
-│   └── traffic_light_timer.v
-│
-├── tb/
-│   └── traffic_light_timer_tb.v
-│
-├── sim/
-│
-├── waveform/
-│
-├── README.md
-│
-└── .gitignore
-```
-
 ---
 
 ## Inputs
@@ -154,7 +133,7 @@ This project implements a **Traffic Light Controller with Timer** using Verilog 
 Compile
 
 ```bash
-iverilog -o traffic.out rtl/traffic_light_timer.v tb/traffic_light_timer_tb.v
+iverilog -o traffic.out traffic_light_timer.v traffic_light_timer_tb.v
 ```
 
 Run
@@ -175,8 +154,8 @@ gtkwave traffic_light_timer.vcd
 
 ```tcl
 vlib work
-vlog rtl/traffic_light_timer.v
-vlog tb/traffic_light_timer_tb.v
+vlog traffic_light_timer.v
+vlog traffic_light_timer_tb.v
 vsim traffic_light_timer_tb
 add wave *
 run -all

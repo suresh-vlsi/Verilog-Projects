@@ -74,24 +74,6 @@ This project implements a **Digital Door Lock System** using Verilog HDL. The sy
 ```
 
 ---
-
-## Directory Structure
-
-```text
-6_Digital_Door_Lock/
-│
-├── rtl/
-│   └── digital_door_lock.v
-│
-├── tb/
-│   └── digital_door_lock_tb.v
-│
-├── sim/
-├── waveform/
-├── README.md
-└── .gitignore
-```
-
 ---
 
 ## Simulation
@@ -101,7 +83,7 @@ This project implements a **Digital Door Lock System** using Verilog HDL. The sy
 Compile
 
 ```bash
-iverilog -o door_lock.out rtl/digital_door_lock.v tb/digital_door_lock_tb.v
+iverilog -o door_lock.out digital_door_lock.v digital_door_lock_tb.v
 ```
 
 Run
@@ -122,8 +104,8 @@ gtkwave digital_door_lock.vcd
 
 ```tcl
 vlib work
-vlog rtl/digital_door_lock.v
-vlog tb/digital_door_lock_tb.v
+vlog digital_door_lock.v
+vlog digital_door_lock_tb.v
 vsim digital_door_lock_tb
 add wave *
 run -all

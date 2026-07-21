@@ -95,37 +95,11 @@ This project implements an **SPI (Serial Peripheral Interface) Master** in Veril
 ```
 
 ---
-
-## Directory Structure
-
-```text
-9_SPI_Master/
-│
-├── rtl/
-│   └── spi_master.v
-│
-├── tb/
-│   └── spi_master_tb.v
-│
-├── sim/
-├── waveform/
-├── README.md
-└── .gitignore
-```
-
 ---
 
 ## Simulation
 
 ### Icarus Verilog
-
-If using folders:
-
-```bash
-iverilog -o spi_master.out rtl/spi_master.v tb/spi_master_tb.v
-```
-
-If both files are in the same directory:
 
 ```bash
 iverilog -o spi_master.out spi_master.v spi_master_tb.v

@@ -63,25 +63,6 @@ Idle | Start | D0 | D1 | D2 | D3 | D4 | D5 | D6 | D7 | Stop
                |
                +-----------> IDLE
 ```
-
----
-
-## Directory Structure
-
-```
-4_UART_Receiver/
-│
-├── rtl/
-│   └── uart_rx.v
-│
-├── tb/
-│   └── uart_rx_tb.v
-│
-├── sim/
-├── waveform/
-└── README.md
-```
-
 ---
 
 ## Parameters
@@ -123,7 +104,7 @@ CLKS_PER_BIT = CLK_FREQ / BAUD_RATE
 ### Icarus Verilog
 
 ```bash
-iverilog -o uart_rx.out rtl/uart_rx.v tb/uart_rx_tb.v
+iverilog -o uart_rx.out uart_rx.v uart_rx_tb.v
 vvp uart_rx.out
 gtkwave uart_rx.vcd
 ```
@@ -132,8 +113,8 @@ gtkwave uart_rx.vcd
 
 ```tcl
 vlib work
-vlog rtl/uart_rx.v
-vlog tb/uart_rx_tb.v
+vlog uart_rx.v
+vlog uart_rx_tb.v
 vsim uart_rx_tb
 add wave *
 run -all
